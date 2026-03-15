@@ -7,7 +7,7 @@
 
 
 # JsxposedX
-
+原文档地址[`README_CN.md`](https://github.com/yeguanyu/JsxposedX/blob/master/README_CN.md)
 - Frida module: [`jsxposedx-frida`](https://github.com/dugongzi/jsxposedx-frida)
 - English: [`README_EN.md`](README_EN.md)
 - 中文：[`README_CN.md`](README_CN.md)
