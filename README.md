@@ -5,7 +5,6 @@
 - 在ai配置页面增加可自定义的超时时长
 - 增加AI深度思考时的内容输出，思考完毕后默认折叠
 
-- 增加AI深度思考时的内容输出，思考完毕后默认折叠
   <a href="test/6E137ADDF2162E44E70545B641C43E89.jpg" target="_blank">
     <img src="test/6E137ADDF2162E44E70545B641C43E89.jpg" width="200" alt="AI深度思考-内容折叠效果">
   </a>
