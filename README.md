@@ -4,7 +4,7 @@
 具体修改如下
 - 在ai配置页面增加可自定义的超时时长
 - 增加AI深度思考时的内容输出，思考完毕后默认折叠
-
+![增加AI深度思考时的内容输出](https://i.imgur.com/xxxxxxx.png)
 
 # JsxposedX
 原文档地址[`README_CN.md`](https://github.com/yeguanyu/JsxposedX/blob/master/README_CN.md)
