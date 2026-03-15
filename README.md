@@ -4,9 +4,11 @@
 具体修改如下
 - 在ai配置页面增加可自定义的超时时长
 - 增加AI深度思考时的内容输出，思考完毕后默认折叠
-![增加AI深度思考时的内容输出](test/6E137ADDF2162E44E70545B641C43E89.jpg)
-[![增加AI深度思考时的内容输出](test/6E137ADDF2162E44E70545B641C43E89.jpg)](test/6E137ADDF2162E44E70545B641C43E89.jpg)
 
+- 增加AI深度思考时的内容输出，思考完毕后默认折叠
+  <a href="test/6E137ADDF2162E44E70545B641C43E89.jpg" target="_blank">
+    <img src="test/6E137ADDF2162E44E70545B641C43E89.jpg" width="200" alt="AI深度思考-内容折叠效果">
+  </a>
 # JsxposedX
 原文档地址[`README_CN.md`](https://github.com/yeguanyu/JsxposedX/blob/master/README_CN.md)
 - Frida module: [`jsxposedx-frida`](https://github.com/dugongzi/jsxposedx-frida)
