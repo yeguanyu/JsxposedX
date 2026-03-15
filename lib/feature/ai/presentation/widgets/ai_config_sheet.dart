@@ -6,6 +6,7 @@ import 'package:JsxposedX/common/widgets/ref_error.dart';
 import 'package:JsxposedX/core/enums/ai_api_type.dart';
 import 'package:JsxposedX/core/extensions/context_extensions.dart';
 import 'package:JsxposedX/core/models/ai_config.dart';
+import 'package:JsxposedX/core/providers/pinia_provider.dart';
 import 'package:JsxposedX/core/utils/url_helper.dart';
 import 'package:JsxposedX/feature/ai/presentation/providers/chat/ai_chat_action_provider.dart';
 import 'package:JsxposedX/feature/ai/presentation/providers/config/ai_config_action_provider.dart';
@@ -92,11 +93,13 @@ class AIConfigSheet extends HookConsumerWidget {
     final formKey = ref.watch(_sheetFormKeyProvider);
     final aiConfigAsync = ref.watch(aiConfigProvider);
     final configListAsync = ref.watch(aiConfigListProvider);
+    final storage = ref.read(piniaStorageLocalProvider);
 
     // editingConfig: null = 新建模式, non-null = 编辑某个已有配置
     // 用 useState 管理，避免引入额外的全局 provider
     final editingConfig = useState<AiConfig?>(null);
     final isNewMode = useState<bool>(false);
+    final aiTimeoutSeconds = useState<int>(30);
 
     // 监听状态变化，自动重置表单
     useEffect(() {
@@ -105,6 +108,16 @@ class AIConfigSheet extends HookConsumerWidget {
       });
       return null;
     }, [isNewMode.value, editingConfig.value]);
+
+    useEffect(() {
+      Future.microtask(() async {
+        aiTimeoutSeconds.value = await storage.getInt(
+          'ai_timeout_seconds',
+          defaultValue: 30,
+        );
+      });
+      return null;
+    }, []);
 
     ref.listen(aiConfigActionProvider, (previous, next) {
       next.whenOrNull(
@@ -145,6 +158,57 @@ class AIConfigSheet extends HookConsumerWidget {
             ),
           ),
           data: (configList) {
+            Future<void> handleEditTimeout() async {
+              final controller = TextEditingController(
+                text: aiTimeoutSeconds.value.toString(),
+              );
+              final result = await showDialog<int>(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text(context.l10n.aiTimeoutSeconds),
+                    content: TextField(
+                      controller: controller,
+                      keyboardType: TextInputType.number,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        hintText: context.l10n.aiTimeoutSecondsHint,
+                      ),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(context.l10n.cancel),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          final raw = controller.text.trim();
+                          final seconds = int.tryParse(raw);
+                          if (seconds == null) {
+                            Navigator.of(context).pop();
+                            return;
+                          }
+                          Navigator.of(context).pop(seconds);
+                        },
+                        child: Text(context.l10n.confirm),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (result == null) {
+                return;
+              }
+
+              final seconds = result.clamp(5, 600);
+              await storage.setInt('ai_timeout_seconds', seconds);
+              aiTimeoutSeconds.value = seconds;
+              if (context.mounted) {
+                ToastMessage.show(context.l10n.saveSuccess);
+              }
+            }
+
             // 确定表单展示的配置：新建模式用空白，编辑模式用选中的，默认用当前配置
             final AiConfig formConfig;
             if (isNewMode.value) {
@@ -178,6 +242,24 @@ class AIConfigSheet extends HookConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Row(
+                    children: [
+                      Text(
+                        context.l10n.aiTimeoutSeconds,
+                        style: TextStyle(
+                          fontSize: 13.sp,
+                          fontWeight: FontWeight.w600,
+                          color: context.theme.hintColor,
+                        ),
+                      ),
+                      const Spacer(),
+                      TextButton(
+                        onPressed: handleEditTimeout,
+                        child: Text('${aiTimeoutSeconds.value}s'),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 12.h),
                   // 配置列表头部
                   Row(
                     children: [

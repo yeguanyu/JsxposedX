@@ -283,6 +283,12 @@ class AppLocalizationsEn extends AppLocalizations {
   String get aiMemoryRounds => 'Memory Rounds';
 
   @override
+  String get aiTimeoutSeconds => 'AI Timeout (seconds)';
+
+  @override
+  String get aiTimeoutSecondsHint => '5-600, adjust based on model latency';
+
+  @override
   String cannotBeEmpty(Object field) {
     return '$field cannot be empty';
   }

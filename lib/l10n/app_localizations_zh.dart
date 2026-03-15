@@ -281,6 +281,12 @@ class AppLocalizationsZh extends AppLocalizations {
   String get aiMemoryRounds => '对话记忆轮数';
 
   @override
+  String get aiTimeoutSeconds => 'AI 超时 (秒)';
+
+  @override
+  String get aiTimeoutSecondsHint => '5-600，建议根据模型速度调整';
+
+  @override
   String cannotBeEmpty(Object field) {
     return '$field不能为空';
   }

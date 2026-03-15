@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "zh",
   "appName": "JSXPOSEDX",
   "@appName": {
@@ -260,6 +260,8 @@
   "aiModelNameHint": "请输入模型名称",
   "aiTemperature": "温度 (Temperature)",
   "aiMemoryRounds": "对话记忆轮数",
+  "aiTimeoutSeconds": "AI 超时 (秒)",
+  "aiTimeoutSecondsHint": "5-600，建议根据模型速度调整",
   "cannotBeEmpty": "{field}不能为空",
   "saveSuccess": "保存成功",
   "test": "测试",

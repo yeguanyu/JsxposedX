@@ -19,6 +19,7 @@ class AiChatActionDatasource {
   final HttpService _httpService;
   final PiniaStorage _storage;
 
+  static const String _aiTimeoutSecondsKey = 'ai_timeout_seconds';
   static const String _sessionIndexKeyPrefix = 'ai_v2_sessions_';
   static const String _chatSpacePrefix = 'ai_v2_chat_';
   static const String _chatConfigSpacePrefix = 'ai_v2_chat_config_';
@@ -112,6 +113,7 @@ class AiChatActionDatasource {
     required List<AiMessageDto> messages,
     List<Map<String, dynamic>>? tools,
   }) async* {
+    final timeout = await _resolveAiTimeout();
     final request = <String, dynamic>{
       'model': config.moduleName,
       'messages': messages.map((message) => message.toJson()).toList(),
@@ -132,6 +134,8 @@ class AiChatActionDatasource {
             'Content-Type': 'application/json',
             'Accept': 'text/event-stream',
           },
+          sendTimeout: timeout,
+          receiveTimeout: timeout,
         ),
       );
 
@@ -244,6 +248,7 @@ class AiChatActionDatasource {
     required List<AiMessageDto> messages,
     List<Map<String, dynamic>>? tools,
   }) async* {
+    final timeout = await _resolveAiTimeout();
     String? system;
     final payloadMessages = <Map<String, dynamic>>[];
 
@@ -278,6 +283,8 @@ class AiChatActionDatasource {
             'Content-Type': 'application/json',
             'Accept': 'text/event-stream',
           },
+          sendTimeout: timeout,
+          receiveTimeout: timeout,
         ),
       );
 
@@ -464,6 +471,7 @@ class AiChatActionDatasource {
     required Map<String, String> headers,
   }) async {
     final stopwatch = Stopwatch()..start();
+    final timeout = await _resolveAiTimeout();
 
     try {
       final response = await _httpService.dio.post(
@@ -472,8 +480,8 @@ class AiChatActionDatasource {
         options: Options(
           responseType: ResponseType.stream,
           headers: headers,
-          sendTimeout: const Duration(seconds: 30),
-          receiveTimeout: const Duration(seconds: 30),
+          sendTimeout: timeout,
+          receiveTimeout: timeout,
         ),
       );
 
@@ -533,6 +541,15 @@ class AiChatActionDatasource {
     } catch (_) {
       return null;
     }
+  }
+
+  Future<Duration> _resolveAiTimeout() async {
+    final rawSeconds = await _storage.getInt(
+      _aiTimeoutSecondsKey,
+      defaultValue: 30,
+    );
+    final seconds = rawSeconds.clamp(5, 600);
+    return Duration(seconds: seconds);
   }
 
   void _accumulateOpenAiToolCalls(

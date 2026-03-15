@@ -638,6 +638,18 @@ abstract class AppLocalizations {
   /// **'对话记忆轮数'**
   String get aiMemoryRounds;
 
+  /// No description provided for @aiTimeoutSeconds.
+  ///
+  /// In zh, this message translates to:
+  /// **'AI 超时 (秒)'**
+  String get aiTimeoutSeconds;
+
+  /// No description provided for @aiTimeoutSecondsHint.
+  ///
+  /// In zh, this message translates to:
+  /// **'5-600，建议根据模型速度调整'**
+  String get aiTimeoutSecondsHint;
+
   /// No description provided for @cannotBeEmpty.
   ///
   /// In zh, this message translates to:

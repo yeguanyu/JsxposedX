@@ -1,4 +1,4 @@
-﻿{
+{
   "@@locale": "en",
   "appName": "JSXPOSEDX",
   "@appName": {
@@ -261,6 +261,8 @@
   "aiModelNameHint": "Enter model name",
   "aiTemperature": "Temperature",
   "aiMemoryRounds": "Memory Rounds",
+  "aiTimeoutSeconds": "AI Timeout (seconds)",
+  "aiTimeoutSecondsHint": "5-600, adjust based on model latency",
   "cannotBeEmpty": "{field} cannot be empty",
   "saveSuccess": "Save Success",
   "test": "Test",
