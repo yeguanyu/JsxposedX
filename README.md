@@ -1,3 +1,11 @@
+# 分支-微调
+# 修改日志
+2026-3-15
+具体修改如下
+- 在ai配置页面增加可自定义的超时时长
+- 增加AI深度思考时的内容输出，思考完毕后默认折叠
+
+
 # JsxposedX
 
 - Frida module: [`jsxposedx-frida`](https://github.com/dugongzi/jsxposedx-frida)
